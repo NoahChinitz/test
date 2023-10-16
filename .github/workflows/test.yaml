@@ -29,14 +29,9 @@ jobs:
 
     - name: Check if Issue Keys Were Found
       run: |
-        if [[ "${{ steps.find_issue_keys.outputs.issue-keys-found }}" == "true" ]]; then
+        if [[ -n "${{ steps.find_issue_keys.outputs.issue }}" ]]; then
           echo "Jira issue keys were found. Proceeding with the push."
         else
           echo "No Jira issue keys were found. Skipping the push."
           exit 1  # Exit the workflow with an error status
         fi
-
-    - name: Push to Main Branch
-      if: steps.find_issue_keys.outputs.issue-keys-found == 'true'
-      run: |
-        git push origin main
