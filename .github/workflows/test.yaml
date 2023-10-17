@@ -15,6 +15,7 @@ on:
   push:
     branches:
       - main
+      - test
 
 jobs:
   check-commit-message:
