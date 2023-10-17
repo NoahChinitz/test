@@ -38,13 +38,9 @@ jobs:
         if [[ -n "${{ steps.find_issue_keys.outputs.issue }}" ]]; then
           echo "Jira issue keys were found. Proceeding with the push."
         else
-          echo "No Jira issue keys were found. Skipping the push."
-          pwd
-          ls
+          echo "No Jira issue keys were found. Reverting the push."
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git reset --hard HEAD~1
-          git pull
-          git push
-          exit 1  # Exit the workflow with an error status
+          git push -f
         fi
