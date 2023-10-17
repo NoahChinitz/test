@@ -27,6 +27,6 @@ jobs:
         with:
           pattern: '(\[(TEST)-(\d+)\])'
           flags: 'gm'
-          error: 'Your first line has to contain a commit type like "[BUGFIX]".'
+          error: 'Your first line has to contain a commit type like "[TEST-1]".'
           checkAllCommitMessages: 'true'
           accessToken: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
