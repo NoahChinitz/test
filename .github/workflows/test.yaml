@@ -33,5 +33,7 @@ jobs:
           echo "Jira issue keys were found. Proceeding with the push."
         else
           echo "No Jira issue keys were found. Skipping the push."
+          git reset --hard HEAD~1
+          git push --force
           exit 1  # Exit the workflow with an error status
         fi
