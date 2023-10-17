@@ -28,6 +28,7 @@ jobs:
         from: commits
 
     - name: Check if Issue Keys Were Found
+      uses: actions/checkout@v4
       run: |
         if [[ -n "${{ steps.find_issue_keys.outputs.issue }}" ]]; then
           echo "Jira issue keys were found. Proceeding with the push."
@@ -35,7 +36,6 @@ jobs:
           echo "No Jira issue keys were found. Skipping the push."
           pwd
           ls
-          git checkout main
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git reset --hard HEAD~1
