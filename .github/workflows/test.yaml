@@ -1,4 +1,30 @@
-name: 'Commit Message Check'
+# name: 'Commit Message Check'
+# on:
+#   pull_request:
+#     types:
+#       - opened
+#       - edited
+#       - reopened
+#       - synchronize
+#   push:
+#     branches:
+#       - main
+#       - test
+
+# jobs:
+#   check-commit-message:
+#     name: Check Commit Message
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Check Commit Type
+#         uses: gsactions/commit-message-checker@v2
+#         with:
+#           pattern: '(\[(TEST)-(\d+)\])'
+#           flags: 'gm'
+#           error: 'Your first line has to contain a commit type like "[TEST-1]".'
+#           checkAllCommitMessages: 'true'
+#           accessToken: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+name: 'Flake8 Pull Request Check'
 on:
   pull_request:
     types:
@@ -6,21 +32,13 @@ on:
       - edited
       - reopened
       - synchronize
-  push:
-    branches:
-      - main
-      - test
 
 jobs:
-  check-commit-message:
-    name: Check Commit Message
+  lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Check Commit Type
-        uses: gsactions/commit-message-checker@v2
+      - uses: actions/checkout@v1
+      - uses: grantmcconnaughey/lintly-flake8-github-action@v1.0
         with:
-          pattern: '(\[(TEST)-(\d+)\])'
-          flags: 'gm'
-          error: 'Your first line has to contain a commit type like "[TEST-1]".'
-          checkAllCommitMessages: 'true'
-          accessToken: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          # The GitHub API token to create reviews with
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
