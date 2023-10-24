@@ -1,4 +1,4 @@
-name: 'Commit Message Check'
+name: 'Pull Request Jira ID Commit Check'
 on:
   pull_request:
     types:
@@ -6,21 +6,17 @@ on:
       - edited
       - reopened
       - synchronize
-  push:
-    branches:
-      - main
-      - test
 
 jobs:
   check-commit-message:
-    name: Check Commit Message
+    name: Check Commit Messages on PR
     runs-on: ubuntu-latest
     steps:
-      - name: Check Commit Type
+      - name: Check Commit
         uses: gsactions/commit-message-checker@v2
         with:
           pattern: '(\[(TEST)-(\d+)\])'
-          flags: 'gm'
-          error: 'Your first line has to contain a commit type like "[TEST-1]".'
+          flags: 'gim'
+          error: 'ERROR: One or more commit messages failed because no valid Jira IDs.'
           checkAllCommitMessages: 'true'
           accessToken: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
