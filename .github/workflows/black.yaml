@@ -8,14 +8,10 @@ on:
       - synchronize
 
 jobs:
-  black_formatter:
+  python-black:
+    name: Python Black
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.1
-      - uses: DataDog/action-py-black-formatter@v2.5
-        id: action_black
-      - name: Annotate diff changes using reviewdog
-        if: steps.action_black.outputs.is_formatted == 'true'
-        uses: reviewdog/action-suggester@v1
-        with:
-          tool_name: blackfmt
+      - name: Python Black
+        uses: cytopia/docker-black@0.8
