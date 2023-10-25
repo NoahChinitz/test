@@ -1,0 +1,18 @@
+name: 'Black Pull Request Check'
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+
+jobs:
+  black_formatter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - uses: DataDog/action-py-black-formatter@v2.5
+        with:
+          only_changed_files: "true"
+          main_branch: "main"
