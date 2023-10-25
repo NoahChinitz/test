@@ -13,6 +13,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4.1.1
       - uses: DataDog/action-py-black-formatter@v2.5
+        id: action_black
         with:
           only_changed_files: "true"
           main_branch: "main"
+      - name: Annotate diff changes using reviewdog
+        if: steps.action_black.outputs.is_formatted == 'true'
+        uses: reviewdog/action-suggester@v1
+        with:
+          tool_name: blackfmt
