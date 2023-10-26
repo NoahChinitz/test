@@ -1,0 +1,44 @@
+name: 'Flake8 Pull Request Check'
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+
+jobs:
+  flake8-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - uses: usama2490/lintly-flake8-github-action@v1.1
+        with:
+          # The GitHub API token to create reviews with
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          args: "--config=.flake8"
+
+name: 'Black Pull Request Check'
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+
+jobs:
+  black_formatter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4.1.1
+      - uses: DataDog/action-py-black-formatter@v2.5
+        id: action_black
+        with:
+          only_changed_files: "true"
+          main_branch: "main"
+      - name: Annotate diff changes using reviewdog
+        if: steps.action_black.outputs.is_formatted == 'true'
+        uses: reviewdog/action-suggester@v1
+        with:
+          tool_name: blackfmt
