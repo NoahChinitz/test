@@ -1,0 +1,23 @@
+name: 'Add Reviewers to dir1/ path'
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+    branches:
+      - 'release/**'
+    paths:
+      - 'dir1/**'
+
+jobs:
+  add-reviewers:
+    name: Add Reviewers
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add Reviewers
+        uses: ryaugusta/pr-add-reviewers@v1
+        with:
+          reviewers: 'nchinitz'
+          accessToken: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
