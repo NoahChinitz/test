@@ -7,7 +7,7 @@ on:
       - reopened
       - synchronize
     branches:
-      - 'release/**'
+      - 'main'
     paths:
       - 'dir1/**'
 
@@ -20,4 +20,4 @@ jobs:
         uses: ryaugusta/pr-add-reviewers@v1
         with:
           reviewers: 'nchinitz'
-          accessToken: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
