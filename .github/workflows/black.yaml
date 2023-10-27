@@ -1,4 +1,4 @@
-name: 'Flake8 Pull Request Check'
+name: 'Black Pull Request Check'
 on:
   pull_request:
     types:
@@ -7,10 +7,32 @@ on:
       - reopened
       - synchronize
 
+# jobs:
+#   black-lint:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Get changed files
+#         id: changed-files
+#         uses: tj-actions/changed-files@v40
+#       - name: List all changed files
+#         run: |
+#           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+#             echo "$file was changed"
+#           done
 jobs:
-  black-lint:
+  linter_name:
+    name: runner / black formatter
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.1
-        run: |
-          pip install black
+      # Install specific version black (this step is not required. default is "black[jupyter]")
+      - run: pip install black
+      - uses: reviewdog/action-black@v3
+        with:
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          # Change reviewdog reporter if you need [github-pr-check, github-check].
+          reporter: github-pr-check
+          # Change reporter level if you need.
+          # GitHub Status Check won't become failure with a warning.
+          level: warning
+          verbose: 'true'
