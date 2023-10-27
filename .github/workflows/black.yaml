@@ -1,4 +1,4 @@
-name: 'Flake8 Pull Request Check'
+name: 'Black Pull Request Check'
 on:
   pull_request:
     types:
@@ -15,3 +15,4 @@ jobs:
       - name: Run Black
         run: |
           pip install black
+          black .
