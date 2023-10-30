@@ -7,18 +7,18 @@ on:
       - reopened
       - synchronize
 
-# jobs:
-#   black-lint:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Get changed files
-#         id: changed-files
-#         uses: tj-actions/changed-files@v40
-#       - name: List all changed files
-#         run: |
-#           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-#             echo "$file was changed"
-#           done
+jobs:
+  black-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v40
+      - name: List all changed files
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
 # jobs:
 #   linter_name:
 #     name: runner / black formatter
@@ -33,13 +33,13 @@ on:
 #           level: error
 #           verbose: 'true'
 
-jobs:
-  linter_name:
-    name: runner / black formatter
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: datadog/action-py-black-formatter@v2.1
-        with:
-          print_diff_mode: "true"
-          only_changed_files: "true"
+# jobs:
+#   linter_name:
+#     name: runner / black formatter
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4
+#       - uses: datadog/action-py-black-formatter@v2.1
+#         with:
+#           print_diff_mode: "true"
+#           only_changed_files: "true"
