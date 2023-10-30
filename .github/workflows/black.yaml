@@ -42,6 +42,13 @@ jobs:
         with:
           fetch-depth: 0
       - uses: datadog/action-py-black-formatter@v2.5
+        id: action_black
         with:
           print_diff_mode: "true"
           only_changed_files: "true"
+          fail_on_error: "false"
+      - name: Annotate diff changes using reviewdog
+        if: steps.action_black.outputs.is_formatted == 'true'
+        uses: reviewdog/action-suggester@v1
+        with:
+          tool_name: blackfmt
