@@ -56,11 +56,7 @@ jobs:
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             if [[ $file == *.py ]]; then
-              if black $file --diff >> "$GITHUB_OUTPUT" 2>&1; then
-                echo "Formatted $file successfully"
-              else
-                echo "Error encountered while formatting $file"
-              fi
+              black $file --diff >> $GITHUB_OUTPUT || echo "Black errored encountered while formatting $file"
             else
               echo "$file is not a python file"
             fi
