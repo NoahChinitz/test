@@ -49,6 +49,7 @@ jobs:
       #     fail_on_error: "false"
       - uses: actions/github-script@v6
         with:
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           script: |
             github.rest.issues.createComment({
               issue_number: context.issue.number,
