@@ -56,12 +56,13 @@ jobs:
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             if [[ $file == *.py ]]; then
-              black $file --diff >> $GITHUB_OUTPUT || echo "Black errored encountered while formatting $file"
+              black $file --diff >> $GITHUB_OUTPUT
             else
               echo "$file is not a python file"
             fi
           done
       - uses: actions/github-script@v6
+        if: always()
         with:
           github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           script: |
