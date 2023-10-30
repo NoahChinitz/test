@@ -47,6 +47,16 @@ jobs:
       #     print_diff_mode: "true"
       #     only_changed_files: "true"
       #     fail_on_error: "false"
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v40
+      - run: pip install black
+      - name: Run Black
+        id: run-black
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            black $file --diff >> $GITHUB_OUTPUT
+          done
       - uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
@@ -55,5 +65,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: 'Thanks for reporting!'
+              body: '${{join(steps.run-black.outputs.*, '\n')}}'
             })
