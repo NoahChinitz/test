@@ -39,6 +39,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.1
+        with:
+          fetch-depth: 0
       - uses: datadog/action-py-black-formatter@v2.5
         with:
           print_diff_mode: "true"
