@@ -55,7 +55,11 @@ jobs:
         id: run-black
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            black $file --diff >> $GITHUB_OUTPUT
+            if [[ $file == *.py ]]; then
+              black $file --diff >> $GITHUB_OUTPUT
+            else
+              echo "$file is nto a python file"
+            fi
           done
       - uses: actions/github-script@v6
         with:
