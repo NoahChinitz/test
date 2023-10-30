@@ -41,13 +41,18 @@ jobs:
       - uses: actions/checkout@v4.1.1
         with:
           fetch-depth: 0
-      - uses: datadog/action-py-black-formatter@v2.5
-        id: action_black
+      # - uses: datadog/action-py-black-formatter@v2.5
+      #   id: action_black
+      #   with:
+      #     print_diff_mode: "true"
+      #     only_changed_files: "true"
+      #     fail_on_error: "false"
+      - uses: actions/github-script@v6
         with:
-          print_diff_mode: "true"
-          only_changed_files: "true"
-          fail_on_error: "false"
-      - name: Annotate diff changes using reviewdog
-        uses: reviewdog/action-suggester@v1
-        with:
-          tool_name: blackfmt
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Thanks for reporting!'
+            })
