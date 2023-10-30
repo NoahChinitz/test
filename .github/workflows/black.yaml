@@ -19,19 +19,27 @@ on:
 #           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
 #             echo "$file was changed"
 #           done
+# jobs:
+#   linter_name:
+#     name: runner / black formatter
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v4.1.1
+#       - run: pip install black
+#       - uses: reviewdog/action-black@v3
+#         with:
+#           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+#           reporter: github-pr-review
+#           level: error
+#           verbose: 'true'
+
 jobs:
   linter_name:
     name: runner / black formatter
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4.1.1
-      - run: pip install black
-      - uses: reviewdog/action-black@v3
+      - uses: datadog/action-py-black-formatter@v2.1
         with:
-          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          # Change reviewdog reporter if you need [github-pr-check, github-check].
-          reporter: github-pr-review
-          # Change reporter level if you need.
-          # GitHub Status Check won't become failure with a warning.
-          level: error
-          verbose: 'true'
+          print_diff_mode: "true"
+          only_changed_files: "true"
