@@ -57,6 +57,7 @@ jobs:
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             if [[ $file == *.py ]]; then
               black $file --diff >> "$GITHUB_OUTPUT"
+              echo $GITHUB_OUTPUT
             else
               echo "$file is not a python file"
             fi
