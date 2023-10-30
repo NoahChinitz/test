@@ -15,6 +15,8 @@ jobs:
       - name: Get Changed Files
         id: changed-files
         uses: tj-actions/changed-files@v40
+        with:
+          files: '**.py'
       - uses: usama2490/lintly-flake8-github-action@v1.1
         with:
           # The GitHub API token to create reviews with
