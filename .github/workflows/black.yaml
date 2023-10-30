@@ -38,7 +38,7 @@ jobs:
     name: runner / black formatter
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.1
+      - uses: actions/checkout@v4
       - uses: datadog/action-py-black-formatter@v2.1
         with:
           print_diff_mode: "true"
