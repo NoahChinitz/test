@@ -19,49 +19,52 @@ on:
 #           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
 #             echo "$file was changed"
 #           done
+jobs:
+  black-lint:
+    name: runner / black formatter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v40
+      - uses: actions/checkout@v4.1.1
+      - run: pip install black
+      - uses: reviewdog/action-black@v3
+        with:
+          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          reporter: github-pr-review
+          level: error
+          verbose: 'true'
+          black_args: ${{ steps.changed-files.outputs.all_changed_files }}
+
 # jobs:
 #   linter_name:
 #     name: runner / black formatter
 #     runs-on: ubuntu-latest
 #     steps:
 #       - uses: actions/checkout@v4.1.1
-#       - run: pip install black
-#       - uses: reviewdog/action-black@v3
 #         with:
-#           github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-#           reporter: github-pr-review
-#           level: error
-#           verbose: 'true'
-
-jobs:
-  linter_name:
-    name: runner / black formatter
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4.1.1
-        with:
-          fetch-depth: 0
+#           fetch-depth: 0
       # - uses: datadog/action-py-black-formatter@v2.5
       #   id: action_black
       #   with:
       #     print_diff_mode: "true"
       #     only_changed_files: "true"
       #     fail_on_error: "false"
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v40
-      - run: pip install black
-      - name: Run Black
-        id: run-black
-        run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            if [[ $file == *.py ]]; then
-              black $file --check >> status.txt
-              cat status.txt
-            else
-              echo "$file is not a python file"
-            fi
-          done
+      # - name: Get changed files
+      #   id: changed-files
+      #   uses: tj-actions/changed-files@v40
+      # - run: pip install black
+      # - name: Run Black
+      #   id: run-black
+      #   run: |
+      #     for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+      #       if [[ $file == *.py ]]; then
+      #         black $file --check >> status.txt
+      #       else
+      #         echo "$file is not a python file"
+      #       fi
+      #     done
       # - uses: actions/github-script@v6
       #   if: always()
       #   with:
@@ -73,10 +76,10 @@ jobs:
       #         repo: context.repo.repo,
       #         body: '${{join(steps.run-black.outputs.*, '\n')}}'
       #       })
-      - name: Create comment
-        uses: peter-evans/create-or-update-comment@v3
-        if: always()
-        with:
-          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          body-path: 'status.txt'
+      # - name: Create comment
+      #   uses: peter-evans/create-or-update-comment@v3
+      #   if: always()
+      #   with:
+      #     token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+      #     issue-number: ${{ github.event.pull_request.number }}
+      #     body-path: 'status.txt'
