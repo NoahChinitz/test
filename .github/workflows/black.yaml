@@ -57,6 +57,7 @@ jobs:
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
             if [[ $file == *.py ]]; then
               black $file --check >> status.txt
+              cat status.txt
             else
               echo "$file is not a python file"
             fi
@@ -74,6 +75,7 @@ jobs:
       #       })
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v3
+        if: always()
         with:
           token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           issue-number: ${{ github.event.pull_request.number }}
