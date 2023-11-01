@@ -6,33 +6,30 @@ on:
       - edited
       - reopened
       - synchronize
+    paths:
+      - '**.py'
 
-# jobs:
-#   black-lint:
-#     runs-on: ubuntu-latest
-#     steps:
-#       - name: Get changed files
-#         id: changed-files
-#         uses: tj-actions/changed-files@v40
-#       - name: List all changed files
-#         run: |
-#           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-#             echo "$file was changed"
-#           done
 jobs:
-  linter_name:
-    name: runner / black formatter
+  black-lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4.1.1
-      # Install specific version black (this step is not required. default is "black[jupyter]")
-      - run: pip install black
-      - uses: reviewdog/action-black@v3
+      - name: Checkout Repo
+        uses: actions/checkout@v4.1.1
+      - name: Get Changed Files
+        id: changed-files
+        uses: tj-actions/changed-files@v40
         with:
-          github_token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          # Change reviewdog reporter if you need [github-pr-check, github-check].
-          reporter: github-pr-check
-          # Change reporter level if you need.
-          # GitHub Status Check won't become failure with a warning.
-          level: warning
-          verbose: 'true'
+          files: '**.py'
+      - name: Install Black
+        run: pip install black
+      - name: Run Black
+        id: run-black
+        if: always()
+        run: |
+          black ${{ steps.changed-files.outputs.all_changed_files }} --diff >> black.txt
+      - name: Comment on PR
+        if: always()
+        uses: thollander/actions-comment-pull-request@v2.4.3
+        with:
+          GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          filePath: black.txt
