@@ -28,6 +28,7 @@ jobs:
         run: |
           flake8 ${{ steps.changed-files.outputs.all_changed_files }} >> flake8.txt
       - name: Comment on PR
+        if: always()
         uses: thollander/actions-comment-pull-request@v2.4.3
         with:
           filePath: flake8.txt
