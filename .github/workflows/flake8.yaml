@@ -26,6 +26,7 @@ jobs:
         id: run-flake8
         if: always()
         run: |
+          echo "Flake8 Output:\n" >> flake8.txt
           flake8 ${{ steps.changed-files.outputs.all_changed_files }} >> flake8.txt
       - name: Comment on PR
         if: always()

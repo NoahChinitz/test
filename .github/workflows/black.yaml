@@ -26,7 +26,8 @@ jobs:
         id: run-black
         if: always()
         run: |
-          black ${{ steps.changed-files.outputs.all_changed_files }} --diff >> black.txt
+          echo "Black Output:\n" >> black.txt
+          black ${{ steps.changed-files.outputs.all_changed_files }} --diff >> black.txt 2>&1
       - name: Comment on PR
         if: always()
         uses: thollander/actions-comment-pull-request@v2.4.3
