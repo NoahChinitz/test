@@ -24,8 +24,10 @@ jobs:
         id: run-flake8
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-              output=$(flake8 $file)
+              flake8 $file >> flake8.txt
           done
+          output=$(cat flake8.txt)
+          echo "::set-output name=output::$output"
       - name: Comment on PR
         uses: actions/github-script@v6
         if: always()
@@ -36,5 +38,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '${{ echo $output }}'
+              body: '${{ steps.run-flake8.outputs.output }}'
             })
