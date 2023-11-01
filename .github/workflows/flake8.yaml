@@ -24,6 +24,7 @@ jobs:
         run: pip install flake8
       - name: Run Flake8
         id: run-flake8
+        if: always()
         run: |
           for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
               flake8 $file >> flake8.txt
@@ -40,5 +41,5 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '${{ steps.run-flake8.outputs.output }}'
+              body: 'Flake8 Output: ${{ steps.run-flake8.outputs.output }}'
             })
