@@ -26,9 +26,7 @@ jobs:
         id: run-flake8
         if: always()
         run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-              flake8 $file >> flake8.txt
-          done
+          flake8 ${{ steps.changed-files.outputs.all_changed_files }} >> flake8.txt
           output=$(cat flake8.txt)
           test=$(echo hello)
           echo "::set-output name=output::$output"
