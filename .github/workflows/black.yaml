@@ -26,7 +26,7 @@ jobs:
         id: run-black
         if: always()
         run: |
-          echo "Black Output:\n" >> black.txt
+          echo "Black Output:" >> black.txt
           black ${{ steps.changed-files.outputs.all_changed_files }} --diff >> black.txt 2>&1
       - name: Comment on PR
         if: always()
