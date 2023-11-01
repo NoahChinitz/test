@@ -1,0 +1,40 @@
+name: 'Flake8 Pull Request Check'
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+      - reopened
+      - synchronize
+    paths:
+      - '**.py'
+
+jobs:
+  flake8-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4.1.1
+      - name: Get Changed Files
+        id: changed-files
+        uses: tj-actions/changed-files@v40
+        with:
+          files: '**.py'
+      - name: Run Flake8
+        id: run-flake8
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+              flake8 > flake8.txt
+          done
+      - name: Comment on PR
+        uses: actions/github-script@v6
+        if: always()
+        with:
+          github-token: ${{ secrets.SERVICE_ACCOUNT_GITHUB_PAT }}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '${{ cat flake8.txt }}'
+            })
