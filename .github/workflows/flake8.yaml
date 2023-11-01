@@ -30,7 +30,7 @@ jobs:
           output=$(cat flake8.txt)
           test=$(echo hello)
           echo "::set-output name=output::$(echo output)"
-          echo "::set-output name=test::$(echo test)"
+          echo "::set-output name=test::hello"
       - name: Comment on PR
         uses: actions/github-script@v6
         if: always()
