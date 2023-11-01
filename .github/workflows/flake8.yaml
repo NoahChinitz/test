@@ -20,6 +20,8 @@ jobs:
         uses: tj-actions/changed-files@v40
         with:
           files: '**.py'
+      - name: Install flake8
+        run: pip install flake8
       - name: Run Flake8
         id: run-flake8
         run: |
@@ -32,7 +34,7 @@ jobs:
         uses: actions/github-script@v6
         if: always()
         with:
-          github-token: ${{ secrets.SERVICE_ACCOUNT_GITHUB_PAT }}
+          github-token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           script: |
             github.rest.issues.createComment({
               issue_number: context.issue.number,
