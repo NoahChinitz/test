@@ -22,6 +22,8 @@ jobs:
           files: '**.py'
       - name: Install Black
         run: pip install black
+      - name: Check Python Version
+        run: python --version
       - name: Run Black
         id: run-black
         if: always()
