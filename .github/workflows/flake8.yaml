@@ -1,4 +1,4 @@
-name: 'Black Pull Request Check'
+name: 'Flake8 Pull Request Check'
 on:
   pull_request:
     types:
@@ -10,7 +10,7 @@ on:
       - '**.py'
 
 jobs:
-  black-lint:
+  flake8-lint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
@@ -20,19 +20,17 @@ jobs:
         uses: tj-actions/changed-files@v40
         with:
           files: '**.py'
-      - name: Install Black
-        run: pip install black
-      - name: Check Python Version
-        run: python --version
-      - name: Run Black
-        id: run-black
+      - name: Install flake8
+        run: pip install flake8
+      - name: Run Flake8
+        id: run-flake8
         if: always()
         run: |
-          echo "Black Output:" >> black.txt
-          black ${{ steps.changed-files.outputs.all_changed_files }} -t py310 --diff >> black.txt 2>&1
+          echo "Flake8 Output:" >> flake8.txt
+          flake8 ${{ steps.changed-files.outputs.all_changed_files }} >> flake8.txt
       - name: Comment on PR
         if: always()
         uses: thollander/actions-comment-pull-request@v2.4.3
         with:
           GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-          filePath: black.txt
+          filePath: flake8.txt
